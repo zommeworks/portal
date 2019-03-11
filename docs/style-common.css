@@ -1,0 +1,38 @@
+:root {
+  /* colors */
+  --c-bk: #222222;
+  --font-l: 1.5em;
+  --font-s: 0.8em;
+  --stroke-xl: 20px;
+  --c-lemon: #f4e2ca;
+  --c-sky: #9cc6c2;
+  --c-blue: #2000dc;
+  --c-indigo: #202040;
+}
+/*****************
+ * containter style *
+ *****************/
+ div, body, html {
+   margin: 0;
+   padding: 0;
+ }
+/*****************
+ * content style *
+ *****************/
+ @import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--c-bk);
+}
+h2 {
+  font-size: var(--font-l);
+  font-weight: 700;
+  letter-spacing: calc(var(--font-l) * 0.1);
+  margin: 0 auto;
+}
+h6 {
+  font-size: var(--font-s);
+  letter-spacing: calc(var(--font-s) * 0.1);
+  margin: 0 auto var(--font-s) auto;
+}
