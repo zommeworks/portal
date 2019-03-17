@@ -1,29 +1,195 @@
 :root {
-  /* colors */
-  --c-bk: #222222;
-  --font-l: 1.5em;
-  --font-s: 0.8em;
+  /* size */
+  --canvas-max-width: 1200px;
+  --canvas-max-height: 800px;
+  --canvas-width: 1200px;
+  --canvas-height: 800px;
+  --column-width: calc(var(--canvas-width)/6);
+  --font-l: calc(var(--canvas-height)*0.05);
+  --font-m: calc(var(--canvas-height)*0.04);
+  --font-s: calc(var(--canvas-height)*0.03);
+  --stroke-xs: 1px;
+  --stroke-s: 2px;
+  --stroke-m: calc(var(--stroke-s)*2);
+  --stroke-l: calc(var(--stroke-s)*3);
   --stroke-xl: 20px;
+  /* colors */
+  --c-black: #222222;
   --c-lemon: #f4e2ca;
+  --c-milktea: #e5bf94;
   --c-sky: #9cc6c2;
   --c-blue: #2000dc;
   --c-indigo: #202040;
 }
-/*****************
+
+
+
+/**************************
+ * screen size definition *
+ **************************/
+
+@media screen and (min-width: 480px) and (min-aspect-ratio: 4/3) {
+  /* pc landscape*/
+  :root {
+    --canvas-width: 100vh;
+    --canvas-height: 75vh;
+    --column-width: 16.666666%;
+    --column-height: 50%;
+    --container-height: calc(var(--canvas-height)*7/6);
+
+    --font-s: calc(var(--canvas-height)*0.03);
+    --font-m: calc(var(--canvas-height)*0.04);
+    --font-l: calc(var(--canvas-height)*0.05);
+    --stroke-xs: calc(var(--font-s)/16);
+    --stroke-s: calc(var(--font-s)/8);
+    --stroke-m: calc(var(--stroke-s)*2);
+    --stroke-l: calc(var(--stroke-s)*3);
+    --stroke-xl: var(--font-m);
+  }
+}
+@media screen and (min-width: 480px) and (max-aspect-ratio: 4/3) {
+  /* pc portrait*/
+  :root {
+    --canvas-width: 75vw;
+    --canvas-height: calc(var(--canvas-width)/4*3);
+    --column-width: 16.666666%;
+    --column-height: 50%;
+    --container-height: calc(var(--canvas-height)*7/6);
+    --font-s: calc(var(--canvas-width)*0.02);
+    --font-m: calc(var(--canvas-width)*0.03);
+    --font-l: calc(var(--canvas-width)*0.04);
+    --stroke-xs: calc(var(--font-s)/16);
+    --stroke-s: calc(var(--font-s)/8);
+    --stroke-m: calc(var(--stroke-s)*2);
+    --stroke-l: calc(var(--stroke-s)*3);
+    --stroke-xl: var(--font-m);
+  }
+}
+
+@media screen and (min-width: 480px) and (max-aspect-ratio: 1/1) {
+  /* tablet portrait*/
+  :root {
+    --canvas-width: 75vw;
+    --canvas-height: 75vh;
+    --column-width: 25%;
+    --column-height: 25%;
+    --container-height: calc(var(--canvas-height)*7/6);
+    --font-s: calc(var(--canvas-width)*0.02);
+    --font-m: calc(var(--canvas-width)*0.03);
+    --font-l: calc(var(--canvas-width)*0.04);
+    --stroke-xs: calc(var(--font-s)/16);
+    --stroke-s: calc(var(--font-s)/8);
+    --stroke-m: calc(var(--stroke-s)*2);
+    --stroke-l: calc(var(--stroke-s)*3);
+    --stroke-xl: var(--font-m);
+  }
+}
+@media screen and (max-width: 480px) {
+  /* mobile (or pc) portrait */
+  :root {
+    --font-s: 0.8em;
+    --font-m: 1em;
+    --font-l: 1.6em;
+    --canvas-width: calc(100vw - 3*var(--stroke-xl));
+    --canvas-height: calc(100vh - 6*var(--stroke-xl));
+    --container-height: calc(100vh - 2*var(--stroke-xl));
+    --column-width: 50%;
+    --column-height: 30vh;
+  }
+}
+
+
+
+/********************
  * containter style *
- *****************/
- div, body, html {
-   margin: 0;
-   padding: 0;
- }
+ ********************/
+div, body, html {
+  margin: 0;
+  padding: 0;
+}
+.container {
+  position: relative;
+  width: var(--canvas-width);
+  height: var(--container-height);
+  margin: 0 auto;
+  overflow: hidden;
+}
+.canvas {
+  position: relative;
+  display: block;
+  overflow-x: hidden;
+  width: 100%;
+  height: var(--canvas-height);
+  margin: 0;
+  background-color: var(--c-sky);
+  border-style: solid;
+  border-width: var(--stroke-xl);
+  border-color: var(--c-black);
+  box-sizing:border-box;
+}
+.liner {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  margin: 0;
+  top: 0;
+  left: 0;
+  flex-flow: column wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  column-gap: 0;
+}
+.footer {
+  position: relative;
+  width: 100%;
+  height: calc(var(--canvas-height)/6);
+  max-height: 12.5vh;
+}
+.myname {
+  position: absolute;
+  width: inherit;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+.cell {
+  display: block;
+  position: relative;
+  width: var(--column-width);
+  height: var(--column-height);
+  box-sizing: border-box;
+  background-image: url('src/img-bg-shelf.svg');
+  background-size: cover;
+  background-position: bottom;
+  border: var(--stroke-s) solid var(--c-black);
+}
+.cell::before, .cell::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+/*
+.cell::before {
+  border: calc(var(--stroke-m) + var(--stroke-s) - var(--stroke-xs)) solid var(--c-black);
+}
+*/
+.cell::after {
+  border: var(--stroke-m) solid var(--c-milktea);
+}
+
+
 /*****************
  * content style *
  *****************/
- @import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', sans-serif;
-  color: var(--c-bk);
+  color: var(--c-black);
 }
 h2 {
   font-size: var(--font-l);
@@ -35,4 +201,55 @@ h6 {
   font-size: var(--font-s);
   letter-spacing: calc(var(--font-s) * 0.1);
   margin: 0 auto var(--font-s) auto;
+}
+
+
+
+
+
+/****************************
+ ***                      ***
+ *** style by screen size ***
+ ***                      ***
+ ****************************/
+
+@media screen and (min-width: 480px) {
+  /* pc and tablet */
+  .container {
+    margin-top: calc((100vh - var(--canvas-height))/2);
+  }
+  .canvas {
+    column-count: 6;
+  }
+  .liner {
+    height: 100%;
+  }
+}
+@media screen and (min-width: 480px) and (max-aspect-ratio: 1/1) {
+  /* tablet portrait */
+  .liner {
+    column-count: 4;
+  }
+}
+@media screen and (max-width: 480px) {
+  /* mobile (or pc) portrait */
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+  .container {
+    margin-top: calc(var(--stroke-xl)*2);
+  }
+  .canvas {
+    overflow-y: auto;
+  }
+  .liner {
+    height: 200%;
+    column-count: 2;
+  }
+  .footer {
+    height: calc(var(--container-height) - var(--canvas-height));
+  }
+  .myname {
+    text-align: right;
+  }
 }
