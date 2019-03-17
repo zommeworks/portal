@@ -6,33 +6,19 @@ var SCREEN_ENUM = Object.freeze({
 	TABLET: 1,
 	MOBILE: 2,
 });
-var screen_name = ['pcLandscape', 'pcPortrait', 'mobilePortrait'];
-/*
-var columnVal = {
-  'pcLandscape': {
-    'number': [3,2,3,3,2,3],
-    'height': [],
-  },
-  'pcPortrait': {
-    'number': [4,4,4,4],
-    'height': [],
-  },
-  'mobilePortrait': {
-    'number': [8,8],
-    'height': [],
-  },
-};
-*/
 var columnVal = [
   {
+    'type': 'pcLandscape',
     'number': [3,2,3,3,2,3],
     'height': [],
   },
   {
+    'type': 'pcPortrait',
     'number': [4,4,4,4],
     'height': [],
   },
   {
+    'type': 'mobilePortrait',
     'number': [8,8],
     'height': [],
   }
@@ -44,11 +30,6 @@ $(document).on('contextmenu', function(){
 
 $(document).ready(function(){
   setCSS();
-  /*
-  setColumn(columnVal.pcLandscape);
-  setColumn(columnVal.pcPortrait);
-  setColumn(columnVal.mobilePortrait);
-  */
   $(columnVal).each(function(i, item){
     setColumn(columnVal[i]);
   });
@@ -59,6 +40,10 @@ $(document).ready(function(){
 $(window).resize(function(){
   changeHeight();
 });
+
+
+
+
 
 function setCSS(){
   $("head").append("<link rel='stylesheet' href='style-common.css' type='text/css' media='screen' />");
@@ -72,14 +57,42 @@ function setCSS(){
 	}
 }
 
+
+
+function shuffleCell(){
+  var shuffleIndex;
+  var blankCount = 16 - index.length;
+  if(blankCount > 0){
+    for(i = 0; i < blankCount; i++){
+      var fileNum = i%3+1;
+      var tempCell = {
+        'name': '',
+        'url': '',
+        'description': '',
+        'file': `src/cell_blank${fileNum}.png`,
+      }
+      index.push(tempCell);
+    }
+  }
+  shuffleIndex = shuffle(index);
+  console.log(shuffleIndex);
+  return(shuffleIndex);
+}
+
+
+
 function putCell(){
-  $(index).each(function(i, item){
+  var tempIndex = shuffleCell();
+  $(tempIndex).each(function(i, item){
     var cell = $('<div></div>');
     $(cell).addClass('cell');
     //$(cell).height(columnVal.pcLandscape.height[i]);
     $('.liner').append(cell);
   });
 }
+
+
+
 function changeHeight(){
   var wW = $(window).width();
   var wH = $(window).height();
@@ -113,8 +126,7 @@ function changeHeight(){
 function setHeight(state){
   var heightValue = columnVal[state].height;
   $('.cell').each(function(i, item){
-    $(item).height(heightValue[i]);
-    console.log(state + '/' + heightValue[i]);
+    $(item).css('height', heightValue[i]);
   });
 }
 
@@ -123,29 +135,36 @@ function setHeight(state){
 function setColumn(column){
   var heightArray = [];
   $(column.number).each(function(i, item){
-    switch(item){
-      case 2:
-        var temp = 40 + 20 * Math.random();
-        heightArray.push(temp + '%');
-        heightArray.push(100 - temp + '%');
-        break;
-      case 3:
-        var temp1 = 25 + 12.5 * Math.random();
-        var temp2 = 25 + 12.5 * Math.random();
-        heightArray.push(temp1 + '%');
-        heightArray.push(temp2 + '%');
-        heightArray.push(100 - (temp1 + temp2) + '%');
-        break;
-      case 4:
-        var temp1 = 20 + 8 * Math.random();
-        var temp2 = 20 + 8 * Math.random();
-        var temp3 = 20 + 8 * Math.random();
-        heightArray.push(temp1 + '%');
-        heightArray.push(temp2 + '%');
-        heightArray.push(temp3 + '%');
-        heightArray.push(100 - (temp1 + temp2 + temp3) + '%');
-        break;
+    var tempSum = 0;
+    for(j = 0; j < item - 1; j++){
+      var randNum = Math.round(10*Math.random())%3/2;//0, 0.5, 1
+      var temp = 100/(item + 1) + 100/(item + 1)/(item-1)*randNum;
+      tempSum += temp;
+      heightArray.push(temp + '%');
+      if(j == item - 2){
+        heightArray.push(100 - tempSum + '%');
+      }
     }
   });
   column.height = heightArray;
+}
+
+
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+  return array;
 }
