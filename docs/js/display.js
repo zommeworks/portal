@@ -30,6 +30,7 @@ $(document).on('contextmenu', function(){
 
 $(document).ready(function(){
   setCSS();
+  setBackground();
   $(columnVal).each(function(i, item){
     setColumn(columnVal[i]);
   });
@@ -59,6 +60,12 @@ function setCSS(){
 
 
 
+function setBackground(){
+  var color = colorIndex[Math.floor(Math.random() * colorIndex.length)];
+  $('.canvas').css('background-color', `var(--c-${color})`);
+}
+
+
 function shuffleCell(){
   var shuffleIndex;
   var blankCount = 16 - index.length;
@@ -69,7 +76,7 @@ function shuffleCell(){
         'name': '',
         'url': '',
         'description': '',
-        'file': `src/cell_blank${fileNum}.png`,
+        'file': `src/cell_blank${fileNum}.svg`,
       }
       index.push(tempCell);
     }
@@ -85,8 +92,12 @@ function putCell(){
   var tempIndex = shuffleCell();
   $(tempIndex).each(function(i, item){
     var cell = $('<div></div>');
+    var itemImage = $('<img>');
+    $(itemImage).addClass('cellImage');
+    $(itemImage).attr('src', item.file);
     $(cell).addClass('cell');
     //$(cell).height(columnVal.pcLandscape.height[i]);
+    $(cell).append(itemImage);
     $('.liner').append(cell);
   });
 }

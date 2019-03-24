@@ -33,7 +33,7 @@ var index = [
     'name': 'zommetimes', // 06
     'url': 'http://zommetimes.zomme.net',
     'description': 'slices of a film named as "memory"',
-    'file': '',
+    'file': 'src/cell_zommetimes.svg',
   },
   {
     'name': 'facebook', // 07
@@ -72,3 +72,5 @@ var index = [
     'file': '',
   },
 ];
+
+var colorIndex = ['lemon', 'sky', 'blue','indigo'];

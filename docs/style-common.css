@@ -162,6 +162,7 @@ div, body, html {
   background-size: cover;
   background-position: bottom;
   border: var(--stroke-s) solid var(--c-black);
+  overflow: hidden;
 }
 .cell::before, .cell::after {
   content: '';
@@ -202,7 +203,11 @@ h6 {
   letter-spacing: calc(var(--font-s) * 0.1);
   margin: 0 auto var(--font-s) auto;
 }
-
+.cellImage {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
 
 
 
